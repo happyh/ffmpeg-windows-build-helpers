@@ -1,4 +1,4 @@
-FROM --platform=amd64 ubuntu:20.04
+FROM ubuntu
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -38,7 +38,8 @@ RUN apt-get update && \
     ed
 
 # copy the entire git dir into the new docker container
-COPY . ./ffmpeg-windows-build-helpers
+#COPY . ./ffmpeg-windows-build-helpers
+RUN mkdir /ffmpeg-windows-build-helpers
 
 WORKDIR /ffmpeg-windows-build-helpers
 ENTRYPOINT [ "bash", "./docker/docker-entry.sh" ]

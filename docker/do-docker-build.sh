@@ -8,7 +8,7 @@ if [ -d "../git" ]; then
 fi
 
 # XX don't recreate this every time?!
-docker build .. -f Dockerfile -t ffmpeg-windows-build-helpers-image # builds an image
+DOCKER_CONTENT_TRUST=0 docker build .. -f Dockerfile -t ffmpeg-windows-build-helpers-image # builds an image
 
 if [ $? -eq 0 ]; then
     ## TODO make better so it doe snot clone everytime, but also no nested repositories. .dockerignore and self copy should also work.
@@ -18,7 +18,7 @@ if [ $? -eq 0 ]; then
     echo [`date +'%Y%m%dT%H%M%S'`] Creating and starting container...
     # When rerunning use $ docker start ffmpegbuilder -i, then in other terminal $ docker exec -it ffmpegbuilder touch /tmp/loop; docker exec -it ffmpegbuilder /bin/bash
     # while the first is still running...
-    docker run --name ffmpegbuilder -it ffmpeg-windows-build-helpers-image || docker start ffmpegbuilder -i
+    docker run --name ffmpegbuilder -it -v /data/public/ffmpeg-windows-build-helpers-org:/ffmpeg-windows-build-helpers ffmpeg-windows-build-helpers-image || docker start ffmpegbuilder -i
 
     if [ $? -eq 0 ]; then
         echo [`date +'%Y%m%dT%H%M%S'`] Build successful
