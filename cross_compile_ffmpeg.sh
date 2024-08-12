@@ -415,6 +415,9 @@ retry_git_or_die() {  # originally from https://stackoverflow.com/a/76012343/324
   for i in $(seq 1 $RETRIES_NO); do
    echo "Downloading (via git clone) $to_dir from $repo_url"
    rm -rf $to_dir.tmp # just in case it was interrupted previously...not sure if necessary...
+   if [ -d $to_dir ]; then
+      break
+   fi
    git clone $repo_url $to_dir.tmp --recurse-submodules && break
    # get here -> failure
    [[ $i -eq $RETRIES_NO ]] && echo "Failed to execute git cmd $repo_url $to_dir after $RETRIES_NO retries" && exit 1
@@ -2399,7 +2402,8 @@ build_ffmpeg() {
   fi
 
   cd $output_dir
-    apply_patch file://$patch_dir/frei0r_load-shared-libraries-dynamically.diff
+    #apply_patch file://$patch_dir/frei0r_load-shared-libraries-dynamically.diff
+    #apply_patch file://$patch_dir/ffmpeg-4.4.3-flv-265-av1.patch -p1
     if [ "$bits_target" = "32" ]; then
       local arch=x86
     else
@@ -2811,9 +2815,9 @@ build_dvbtee=n
 build_libmxf=n
 build_mp4box=n
 build_mplayer=n
-build_vlc=n
+build_vlc=y
 build_lsw=n # To build x264 with L-Smash-Works.
-build_dependencies=y
+build_dependencies=n
 git_get_latest=y
 prefer_stable=y # Only for x264 and x265.
 build_intel_qsv=y # note: not windows xp friendly!
@@ -2835,7 +2839,8 @@ original_cppflags='-U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=0' # Needed for mingw-w64
 #else
 #  original_cflags='-mtune=generic -O2'
 #fi
-ffmpeg_git_checkout_version=
+ffmpeg_git_checkout_version="n6.1.2"
+#ffmpeg_git_checkout_version=
 build_ismindex=n
 enable_gpl=y
 build_x264_with_libav=n # To build x264 with Libavformat.
@@ -3027,3 +3032,5 @@ echo "searching for all local exe's (some may not have been built this round, NB
 for file in $(find_all_build_exes); do
   echo "built $file"
 done
+
+echo "finish OK!!!"
