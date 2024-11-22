@@ -4,14 +4,19 @@
 
 set -e
 
-OUTPUTDIR=/output
+OUTPUTDIR=./output
 
-./cross_compile_ffmpeg.sh --build-ffmpeg-shared=n --build-ffmpeg-static=y --disable-nonfree=n --build-intel-qsv=y --compiler-flavors=win64 --enable-gpl=y
+if [ ! -d "sandbox" ];then
+  tar -xzf /sandbox.tar.gz
+fi
+
+ffmpegversion=n6.1.2
+./cross_compile_ffmpeg.sh --build-ffmpeg-shared=n --build-ffmpeg-static=y --disable-nonfree=n --build-intel-qsv=y --compiler-flavors=win64 --enable-gpl=y --ffmpeg-git-checkout-version=$ffmpegversion --build-dependencies=y
 
 mkdir -p $OUTPUTDIR/static/bin
-cp -R -f ./sandbox/win64/ffmpeg_git_with_fdk_aac/ffmpeg.exe $OUTPUTDIR/static/bin
-cp -R -f ./sandbox/win64/ffmpeg_git_with_fdk_aac/ffprobe.exe $OUTPUTDIR/static/bin
-cp -R -f ./sandbox/win64/ffmpeg_git_with_fdk_aac/ffplay.exe $OUTPUTDIR/static/bin
+cp -R -f ./sandbox/win64/ffmpeg_git_with_fdk_aac_$ffmpegversion/ffmpeg.exe $OUTPUTDIR/static/bin
+cp -R -f ./sandbox/win64/ffmpeg_git_with_fdk_aac_$ffmpegversion/ffprobe.exe $OUTPUTDIR/static/bin
+cp -R -f ./sandbox/win64/ffmpeg_git_with_fdk_aac_$ffmpegversion/ffplay.exe $OUTPUTDIR/static/bin
 
 #mkdir -p $OUTPUTDIR/shared
 #cp -R -f ./sandbox/win64/ffmpeg_git_with_fdk_aac_shared/bin/ $OUTPUTDIR/shared

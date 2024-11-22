@@ -2839,8 +2839,7 @@ original_cppflags='-U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=0' # Needed for mingw-w64
 #else
 #  original_cflags='-mtune=generic -O2'
 #fi
-ffmpeg_git_checkout_version="n6.1.2"
-#ffmpeg_git_checkout_version=
+ffmpeg_git_checkout_version=
 build_ismindex=n
 enable_gpl=y
 build_x264_with_libav=n # To build x264 with Libavformat.

@@ -1,4 +1,4 @@
-FROM ubuntu
+FROM ubuntu:20.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -39,6 +39,7 @@ RUN apt-get update && \
 
 # copy the entire git dir into the new docker container
 #COPY . ./ffmpeg-windows-build-helpers
+COPY ./sandbox.tar.gz /
 RUN mkdir /ffmpeg-windows-build-helpers
 
 WORKDIR /ffmpeg-windows-build-helpers
